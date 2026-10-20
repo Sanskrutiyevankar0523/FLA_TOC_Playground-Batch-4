@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOC Interactive Lab · Batch 4</title>
+<style>
+:root{--ink:#28334a;--muted:#68748b;--bg:#f7f8ff;--card:#fff;--lav:#e9e4ff;--blue:#dff1ff;--pink:#ffe5ef;--mint:#dcf8ed;--yellow:#fff2c9;--line:#e5e8f2;--accent:#7867e8;--shadow:0 12px 35px #59618a14}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 10% 0%,#f0eaff 0,transparent 32%),radial-gradient(circle at 90% 10%,#e1f6ff 0,transparent 28%),var(--bg);font-family:Inter,ui-rounded,"Segoe UI",system-ui,sans-serif;color:var(--ink)}
+header{position:sticky;top:0;z-index:20;background:#ffffffd9;backdrop-filter:blur(14px);border-bottom:1px solid #e8e9f3;padding:12px clamp(14px,4vw,52px);display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.4px}.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,#8b7cf6,#76cce8);display:grid;place-items:center;color:white;font-size:20px;box-shadow:0 5px 12px #8173e744}
+nav{display:flex;gap:7px;flex-wrap:wrap}nav button{border:0;background:transparent;padding:10px 14px;border-radius:12px;color:var(--muted);font-weight:750;cursor:pointer;transition:.25s}nav button.active,nav button:hover{background:var(--lav);color:#5144b9}
+main{max-width:1150px;margin:auto;padding:28px clamp(14px,4vw,40px) 70px}.page{display:none;animation:enter .4s ease}.page.active{display:block}@keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{text-transform:uppercase;letter-spacing:1.7px;font-size:11px;font-weight:850;color:var(--accent)}h1{font-size:clamp(30px,5vw,48px);letter-spacing:-1.8px;line-height:1.06;margin:9px 0 12px}h2{font-size:23px;letter-spacing:-.6px;margin:0 0 12px}h3{font-size:17px;margin:0 0 8px}p{line-height:1.65;color:var(--muted);margin:7px 0 12px}.hero{padding:30px;border-radius:27px;background:linear-gradient(120deg,#f0edff,#e6f7ff 70%,#fdf0f5);border:1px solid white;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"aⁿ bⁿ aⁿ  •  0ⁿ 1³ⁿ";position:absolute;right:20px;bottom:12px;font-size:clamp(16px,3vw,28px);font-weight:900;color:#8177d51c;transform:rotate(-7deg)}.hero p{max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;margin-top:20px}.card{background:var(--card);border:1px solid var(--line);border-radius:21px;padding:22px;box-shadow:var(--shadow);min-width:0}.topic-head{display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none}.topic-head::-webkit-details-marker{display:none}.topic-icon{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;font-size:22px;flex-shrink:0}.topic-card details[open] .chev{transform:rotate(180deg)}.chev{margin-left:auto;transition:.25s;color:var(--muted)}details .inside{padding-top:16px;animation:enter .3s}.step{display:flex;gap:10px;margin:12px 0;align-items:flex-start}.num{width:26px;height:26px;border-radius:9px;background:var(--lav);color:#5749bd;display:grid;place-items:center;font-size:12px;font-weight:900;flex-shrink:0}.example{background:#f8f9ff;border-radius:14px;padding:13px;margin-top:12px;font-family:ui-monospace,monospace;color:#4b5270;overflow-wrap:anywhere}.tag{display:inline-block;border-radius:100px;padding:5px 9px;font-size:11px;font-weight:800;background:var(--mint);color:#267a60}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;background:var(--accent);color:white;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 5px 13px #7867e833}.btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px #7867e844}.btn.secondary{background:#f0efff;color:#5548bd;box-shadow:none}.btn.ghost{background:#f1f3f9;color:#556078;box-shadow:none}.section-title{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:28px 0 12px}.section-title p{margin:0}.sim-layout{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr);gap:17px;margin-top:18px}.controls label{display:block;font-size:12px;font-weight:850;color:var(--muted);margin:13px 0 6px}.controls input,.controls select{width:100%;padding:12px 13px;border:1px solid #dfe3f0;border-radius:12px;background:#fcfcff;font:inherit;color:var(--ink);outline-color:var(--accent)}.small{font-size:12px}.warning{background:var(--yellow);padding:12px 14px;border-radius:13px;color:#735c1b;font-size:13px;line-height:1.5;margin-top:13px}.success{background:var(--mint);padding:12px 14px;border-radius:13px;color:#26765d;font-size:13px;line-height:1.5;margin-top:13px}
+.scene{min-height:350px;background:linear-gradient(145deg,#fbfaff,#f0f8ff);border:1px solid var(--line);border-radius:20px;padding:20px;overflow:hidden}.scene-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:18px}.status{font-size:12px;font-weight:850;padding:7px 10px;border-radius:99px;background:var(--blue);color:#376b90}.string{display:flex;gap:5px;flex-wrap:wrap;min-height:42px;align-items:center}.sym{min-width:29px;height:35px;padding:0 7px;display:grid;place-items:center;border-radius:9px;font-family:ui-monospace,monospace;font-weight:900;background:var(--blue);color:#306a96;border:1px solid #c6e5fa;transition:.3s}.sym.b{background:var(--pink);color:#a34f75;border-color:#ffd0e1}.sym.c{background:var(--mint);color:#287d61;border-color:#c2eedc}.sym.hot{outline:3px solid #f5c85b;transform:translateY(-4px)}.scene-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:850;margin:17px 0 8px}.machine{display:flex;align-items:center;justify-content:center;gap:10px;margin:20px 0;flex-wrap:wrap}.machine-box{border:2px solid #c8c3fa;background:#fff;border-radius:15px;padding:13px;min-width:95px;text-align:center;box-shadow:0 5px 14px #8c82cf17}.machine-box strong{display:block;font-size:21px}.arrow{font-size:24px;color:var(--accent);animation:nudge 1.2s infinite}@keyframes nudge{50%{transform:translateX(4px)}}.stack{display:flex;flex-direction:column-reverse;gap:4px;align-items:center;min-height:60px;padding:10px;background:#fff;border:2px dashed #b8c5df;border-radius:14px;min-width:100px}.stack-token{width:58px;padding:7px;text-align:center;border-radius:8px;background:var(--lav);color:#5547b9;font-weight:900;animation:pop .25s}.stack-token.bottom{background:#e8edf6;color:#66718a}@keyframes pop{from{transform:scale(.6);opacity:.4}to{transform:scale(1);opacity:1}}.state-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:15px 0}.state{border:2px solid #bdb6fa;border-radius:50%;width:54px;height:54px;display:grid;place-items:center;background:#fff;font-weight:900}.state.current{background:var(--lav);box-shadow:0 0 0 5px #e9e4ff}.state.accept{border-color:#81d5b4;background:#e2fbef}.transition-list{display:grid;gap:7px}.transition{padding:10px 12px;border-radius:11px;background:#fff;border:1px solid var(--line);font:12px ui-monospace,monospace;display:flex;justify-content:space-between;gap:10px}.transition.active{border-color:#8e81ef;background:#f0edff}.log{margin-top:12px;max-height:120px;overflow:auto;font-size:12px;color:var(--muted);line-height:1.7}.progress{height:6px;border-radius:99px;background:#e4e7f2;overflow:hidden;margin:12px 0}.progress div{height:100%;background:linear-gradient(90deg,#8171ef,#76cfe0);width:0;transition:width .3s}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:12px}.dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}.footer-note{margin-top:22px;padding:15px 17px;background:#fff;border:1px solid var(--line);border-radius:15px;color:var(--muted);font-size:13px;line-height:1.6}
+@media(max-width:760px){header{align-items:flex-start;flex-direction:column}.grid,.sim-layout{grid-template-columns:1fr}.hero{padding:22px}.scene{min-height:300px}.brand{font-size:14px}nav{width:100%}nav button{flex:1;padding:9px 5px;font-size:12px}}
+
+/* balanced playful UI: warm, clean, lightly animated */
+:root{--ink:#30384b;--muted:#707b8e;--bg:#f7f8fc;--card:#ffffff;--lav:#eceaff;--blue:#e5f3ff;--pink:#ffeaf0;--mint:#e2f7ed;--yellow:#fff4d6;--line:#e5e8f0;--accent:#7c73d8;--shadow:0 8px 24px #27304b0b}
+body{background:radial-gradient(circle at 8% 0%,#efedff 0,transparent 28%),radial-gradient(circle at 95% 8%,#eaf6ff 0,transparent 24%),var(--bg);font-family:Inter,'Segoe UI',system-ui,sans-serif}
+header{background:#ffffffeb;border-bottom:1px solid var(--line);box-shadow:0 3px 14px #30384b08}
+.brand{font-size:15px;letter-spacing:-.3px}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#8279dc,#79b8d9);box-shadow:none;transform:none}
+nav button{border:1px solid transparent;border-radius:11px;font-size:13px;transition:background .28s ease,color .28s ease,border-color .28s ease,transform .28s ease}
+nav button.active,nav button:hover{background:#eeecff;color:#5149a6;border-color:#dcd8ff;box-shadow:none;transform:translateY(-1px)}
+.page{display:none;opacity:0}.page.active{display:block;animation:pageIn .38s cubic-bezier(.2,.75,.25,1) both}@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.hero{border:1px solid #e4e2fa;border-radius:24px;background:linear-gradient(115deg,#f0efff,#f0f8ff 75%,#fff5f8);box-shadow:var(--shadow);padding:30px}.hero:before{content:none}.hero:after{content:'aⁿ bⁿ cⁿ  ·  0ⁿ 1³ⁿ';color:#7770bd18;letter-spacing:1px;transform:none}
+.eyebrow{text-transform:uppercase;letter-spacing:1.2px;font-size:11px;color:#7168c4}h1{letter-spacing:-1.3px}h2{letter-spacing:-.4px}
+.card{border:1px solid var(--line);border-radius:19px;box-shadow:var(--shadow);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}.card:hover{transform:translateY(-2px);border-color:#d7d5f5;box-shadow:0 12px 28px #27304b10}
+.topic-icon{border-radius:12px;font-size:19px}.topic-head{transition:color .2s ease}.chev{transition:transform .3s ease,color .3s ease}.inside{animation:pageIn .28s ease both}
+.btn{border-radius:10px;box-shadow:none;transition:transform .22s ease,background .22s ease,box-shadow .22s ease,filter .22s ease}.btn:hover{transform:translateY(-2px);box-shadow:0 5px 12px #45407d18;filter:saturate(1.06)}.btn:active,nav button:active{transform:scale(.97)}.btn.secondary{background:#eeecff;color:#5149a6}.btn.ghost{background:#f0f2f7;color:#586477}
+.scene{background:linear-gradient(145deg,#fcfcff,#f2f8ff);border-radius:18px;box-shadow:var(--shadow)}.sym{transition:transform .32s cubic-bezier(.2,.8,.2,1),background .28s,border-color .28s;animation:tileIn .24s ease both}@keyframes tileIn{from{opacity:0;transform:translateY(5px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}.sym.hot{outline:3px solid #f1c85e;transform:translateY(-3px)}
+.stack{flex-direction:column-reverse}.stack-token{animation:tokenIn .28s cubic-bezier(.2,.8,.2,1)}@keyframes tokenIn{from{opacity:0;transform:translateY(-8px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+.state{transition:background .3s ease,box-shadow .3s ease,border-color .3s ease,transform .3s ease}.state.current{box-shadow:0 0 0 4px #eceaff;transform:scale(1.04)}.transition{transition:background .25s,border-color .25s}.progress div{transition:width .45s cubic-bezier(.2,.75,.25,1)}
+input:focus,select:focus{border-color:#9289e5!important;box-shadow:0 0 0 3px #eeecff;outline:none;transition:box-shadow .2s,border-color .2s}
+@media(max-width:760px){.hero{padding:22px}.card{border-radius:16px}}
+
+/* visual teaching upgrades: explicit stack levels and proof decomposition */
+.pda-visual-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,.8fr);gap:16px;align-items:stretch;margin-top:14px}
+.stack-board{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;min-height:320px}
+.stack-board-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.stack-jar{display:flex;flex-direction:column-reverse;justify-content:flex-start;align-items:center;gap:5px;min-height:235px;padding:12px 10px 10px;border:2px solid #cbd4e4;border-top:0;border-radius:0 0 15px 15px;background:linear-gradient(#fbfcff,#f4f6fb);position:relative}
+.stack-jar:before{content:'TOP OF STACK';position:absolute;top:4px;left:0;right:0;text-align:center;font-size:10px;font-weight:900;letter-spacing:1.2px;color:#8994a7}
+.stack-token{width:min(100%,190px);min-height:34px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;background:#eceaff;color:#5547b9;font-weight:900;border:1px solid #d8d3ff;animation:stackDrop .32s ease both;box-shadow:0 2px 0 #dcd8f7}
+.stack-token .token-count{font-size:10px;font-weight:700;color:#7168c4;background:#fff;padding:2px 5px;border-radius:5px}
+.stack-token.bottom{background:#e8edf6;color:#66718a;border-color:#d5dce9;box-shadow:0 2px 0 #d9e0eb}
+@keyframes stackDrop{from{transform:translateY(-15px);opacity:.2}to{transform:translateY(0);opacity:1}}
+.step-explain{background:#f7f8ff;border:1px solid #e0e4f2;border-radius:14px;padding:14px;margin-top:12px;min-height:100px}
+.step-explain .big-step{font-size:13px;font-weight:900;color:#5149a6;margin-bottom:5px}
+.pda-ledger{display:grid;gap:7px;margin-top:12px;max-height:210px;overflow:auto}
+.ledger-row{display:grid;grid-template-columns:28px 1fr;gap:9px;padding:9px 10px;background:#fff;border:1px solid var(--line);border-radius:10px;font-size:12px;line-height:1.45}
+.ledger-row .ledger-n{height:25px;width:25px;border-radius:8px;background:#eceaff;color:#5149a6;display:grid;place-items:center;font-weight:900}
+.ledger-row.active{border-color:#8e81ef;background:#f5f3ff}
+.tape-help{font-size:12px;color:var(--muted);margin-top:7px}
+.pump-decomp{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin:10px 0 5px}
+.part-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:36px;min-height:51px;padding:5px 7px;border:1px solid #dce1ee;border-radius:9px;background:#fff;font:800 14px ui-monospace,monospace;transition:transform .25s,background .25s}
+.part-chip small{font:800 10px system-ui;color:#788399;margin-top:3px}
+.part-chip.part-v,.part-chip.part-x{background:#fff1c8;border-color:#f0d57e;color:#8b6717}
+.part-chip.part-u{background:#e5f3ff;border-color:#c9e6fa;color:#306a96}
+.part-chip.part-w{background:#f0efff;border-color:#dcd8ff;color:#5548bd}
+.part-chip.part-y{background:#e2f7ed;border-color:#c7edda;color:#287d61}
+.pump-metric-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.pump-metric{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.pump-metric strong{display:block;font-size:20px}.pump-metric span{font-size:10px;color:var(--muted);font-weight:800}
+@media(max-width:760px){.pda-visual-grid{grid-template-columns:1fr}.pump-metric-row{grid-template-columns:1fr 1fr 1fr}.stack-board{min-height:auto}}
+.pump-analysis {
+  margin-top: 24px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e1e5f0;
+  border-radius: 18px;
+  color: #30364b;
+}
+
+.pump-analysis-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.pump-analysis-header h2 { margin: 0; }
+.pump-analysis h3 { margin: 22px 0 10px; font-size: 15px; }
+
+.pump-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pump-summary-card,
+.pump-summary-message {
+  min-width: 0;
+  padding: 14px;
+  background: #f7f8fc;
+  border: 1px solid #e5e8f2;
+  border-radius: 12px;
+}
+
+.pump-summary-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #747e95;
+  font-size: 12px;
+}
+
+.pump-summary-card strong { overflow-wrap: anywhere; }
+.pump-summary-message { line-height: 1.65; overflow-wrap: anywhere; }
+
+.analysis-badge {
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #edf0f7;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.analysis-badge.valid { background: #dcfce7; color: #166534; }
+.analysis-badge.invalid { background: #fee2e2; color: #991b1b; }
+
+.pump-condition-list { display: grid; gap: 8px; }
+
+.pump-condition {
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: #f7f8fc;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.pump-condition.pass { border-left: 4px solid #22a06b; }
+.pump-condition.fail { border-left: 4px solid #dc4545; }
+.pump-condition.neutral { border-left: 4px solid #929bb0; }
+
+.pump-table-wrapper { overflow-x: auto; }
+
+.pump-comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.pump-comparison-table th,
+.pump-comparison-table td {
+  padding: 11px 9px;
+  border-bottom: 1px solid #e7eaf2;
+  text-align: left;
+  vertical-align: top;
+}
+
+.pump-comparison-table th {
+  background: #f7f8fc;
+  white-space: nowrap;
+}
+
+.pump-comparison-table td:nth-child(2) { overflow-wrap: anywhere; }
+
+@media (max-width: 600px) {
+  .pump-summary-grid { grid-template-columns: 1fr; }
+  .pump-analysis { padding: 15px; }
+}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">🪄</div><div>TOC Playground <span style="font-weight:600;color:#a17a91">✦ Batch 4</span></div></div>
+<nav aria-label="Main navigation"><button class="active" data-page="learn">01 · Learn</button><button data-page="pump">02 · Pumping Lemma</button><button data-page="pda">03 · PDA Simulator</button></nav></header>
+<main>
+<section id="learn" class="page active">
+<div class="hero"><div class="eyebrow">✿ theory of computation · tiny story lab ✿</div><h1>Theory of Computation<br><span style="color:#7168c4">Interactive Lab</span></h1><p>Explore both assigned questions through short explanations and step-by-step simulations. Change the input and observe what the machine or pumping operation does.</p><div class="actions"><button class="btn" onclick="go('pump')">Explore Pumping Lemma →</button><button class="btn secondary" onclick="go('pda')">Try the PDA →</button></div></div>
+<div class="section-title"><div><h2>Choose a topic</h2><p>Open either topic to see the definition, procedure and a worked example.</p></div></div>
+<div class="grid">
+<article class="card topic-card"><details><summary class="topic-head"><div class="topic-icon" style="background:var(--pink)">🧩</div><div><h3>🧩 Pumping Lemma</h3><div class="small" style="color:var(--muted)">Question 1 · Prove the language is not context-free</div></div><span class="chev">⌄</span></summary><div class="inside"><p>Think of a long string as a line of tiles. The lemma says a sufficiently long CFL string can be split into five parts, and two selected parts can be repeated (pumped) together. For the assigned language, every permitted split fails to keep the three block counts equal after a suitable pump.</p><div class="example">L = { aⁿ bⁿ cⁿ | n ≥ 1 }<br>s = aᵖ bᵖ cᵖ<br>s = u v w x y<br>|vwx| ≤ p, |vx| &gt; 0</div><div class="step"><span class="num">1</span><div><b>Choose a long string</b><br><span class="small">Take s = aᵖbᵖcᵖ, where p is the pumping length.</span></div></div><div class="step"><span class="num">2</span><div><b>Split into five parts</b><br><span class="small">The window vwx is at most p symbols long, so it cannot cover all three blocks at once.</span></div></div><div class="step"><span class="num">3</span><div><b>Pump down</b><br><span class="small">Set i = 0, removing v and x. At least one symbol disappears. Since v and x fit within a short window, pumping down disrupts the required equal counts or block order.</span></div></div><div class="warning">Important: the Pumping Lemma is not a stack machine. It is a proof technique about repeating/removing substrings.</div></div></details></article>
+<article class="card topic-card"><details><summary class="topic-head"><div class="topic-icon" style="background:var(--blue)">🪄</div><div><h3>Pushdown Automaton (PDA)</h3><div class="small" style="color:var(--muted)">Question 2 · Construct a PDA</div></div><span class="chev">⌄</span></summary><div class="inside"><p>A PDA is like a little robot with states and a stack. Every input symbol moves the robot; stack markers are pushed or popped to remember how many symbols still need matching.</p><div class="example">L = { 0ⁿ 1³ⁿ | n ≥ 1 }<br>For every 0 → push 3 markers<br>For every 1 → pop 1 marker</div><div class="step"><span class="num">1</span><div><b>Read the zeros</b><br><span class="small">Each zero adds three markers to the stack.</span></div></div><div class="step"><span class="num">2</span><div><b>Switch to the ones phase</b><br><span class="small">Once a 1 appears, no more zeros are allowed.</span></div></div><div class="step"><span class="num">3</span><div><b>Pop one per 1</b><br><span class="small">Accept only when input is finished and all markers have been removed, with at least one zero read.</span></div></div><div class="success">Quick example: 00 creates 6 markers. The six 1s in 00111111 pop all six, so the input is accepted.</div></div></details></article>
+</div>
+<div class="footer-note"><b>Extra idea for the chart:</b> Add a QR code to this mini-playground, and invite the examiner to enter a string. Use the Pumping Lemma page to show a proof story, and the PDA page to show the stack changing live.</div>
+</section>
+
+
+
+<section id="pump" class="page">
+  <div class="eyebrow">Question 1 · Interactive proof simulator</div>
+  <h1>Can the string survive pumping?</h1>
+  <p>
+    Explore the CFL pumping lemma for
+    <b>L = {aⁿbⁿcⁿ | n ≥ 0}</b>. Enter a string and its five-part
+    decomposition, then inspect the conditions and pumping results.
+  </p>
+
+  <div class="sim-layout">
+    <div class="card controls">
+      <h2>1 · Define your decomposition</h2>
+
+      <label for="pumpString">Original string (s)</label>
+      <input id="pumpString" value="aabbcc" maxlength="100"
+        autocomplete="off" spellcheck="false" placeholder="e.g. aabbcc">
+
+      <label for="pumpLength">Pumping length (p)</label>
+      <input id="pumpLength" type="number" min="1" max="100" value="3">
+
+      <p class="small">
+        Enter only a, b and c. The language is
+        L = {aⁿbⁿcⁿ | n ≥ 0}.
+      </p>
+
+      <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+        <div>
+          <label for="partU">Part u</label>
+          <input id="partU" value="a" maxlength="100">
+        </div>
+        <div>
+          <label for="partV">Part v</label>
+          <input id="partV" value="a" maxlength="100">
+        </div>
+        <div>
+          <label for="partW">Part w</label>
+          <input id="partW" value="b" maxlength="100">
+        </div>
+        <div>
+          <label for="partX">Part x</label>
+          <input id="partX" value="b" maxlength="100">
+        </div>
+        <div style="grid-column:1/-1">
+          <label for="partY">Part y</label>
+          <input id="partY" value="cc" maxlength="100">
+        </div>
+      </div>
+
+      <label for="pumpI">Pumping value (i)</label>
+      <select id="pumpI">
+        <option value="0">i = 0 · remove v and x</option>
+        <option value="1" selected>i = 1 · original string</option>
+        <option value="2">i = 2 · repeat v and x</option>
+      </select>
+
+      <div class="actions">
+        <button class="btn" id="pumpRun">▶ Check &amp; animate</button>
+        <button class="btn secondary" id="pumpReset">Reset</button>
+      </div>
+
+      <div id="pumpExplain" class="warning">
+        Enter a decomposition and press Check &amp; animate.
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-top">
+        <h3>String workbench</h3>
+        <span id="pumpStatus" class="status">Ready</span>
+      </div>
+
+      <div class="scene-label">1 · Original string s</div>
+      <div id="pumpOriginal" class="string"></div>
+
+      <div class="scene-label">2 · Five-part decomposition</div>
+      <div id="pumpParts" class="pump-decomp"></div>
+      <div id="pumpEquation" class="example">s = u v w x y</div>
+
+      <div class="scene-label">3 · Pumped string</div>
+      <div id="pumpResult" class="string"></div>
+
+      <div class="pump-metric-row">
+        <div class="pump-metric">
+          <strong id="countA">—</strong>
+          <span>NUMBER OF a's</span>
+        </div>
+        <div class="pump-metric">
+          <strong id="countB">—</strong>
+          <span>NUMBER OF b's</span>
+        </div>
+        <div class="pump-metric">
+          <strong id="countC">—</strong>
+          <span>NUMBER OF c's</span>
+        </div>
+      </div>
+
+      <div class="progress"><div id="pumpProgress"></div></div>
+      <div id="pumpLog" class="log">Results will appear here.</div>
+
+      <div id="pumpChecks" class="footer-note">
+        The decomposition conditions have not been checked yet.
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW: Pumping analysis and summary panel -->
+  <div class="pump-analysis" id="pumpAnalysis">
+    <div class="pump-analysis-header">
+      <h2>Pumping Analysis &amp; Summary</h2>
+      <span id="analysisStatus" class="analysis-badge">
+        Waiting for input
+      </span>
+    </div>
+
+    <div class="pump-summary-grid">
+      <div class="pump-summary-card">
+        <span>Original string</span>
+        <strong id="summaryOriginal">—</strong>
+      </div>
+      <div class="pump-summary-card">
+        <span>Pumped string</span>
+        <strong id="summaryPumped">—</strong>
+      </div>
+      <div class="pump-summary-card">
+        <span>Pumping value (i)</span>
+        <strong id="summaryI">—</strong>
+      </div>
+    </div>
+
+    <h3>Decomposition validation</h3>
+    <div id="summaryDecomposition" class="pump-summary-message">
+      Waiting for validation.
+    </div>
+
+    <h3>Condition-by-condition checks</h3>
+    <div id="summaryConditions" class="pump-condition-list"></div>
+
+    <h3>Does the pumped string belong to L?</h3>
+    <div id="summaryMembership" class="pump-summary-message">
+      Not evaluated yet.
+    </div>
+
+    <h3>Compare pumping values i = 0, 1, 2</h3>
+    <div class="pump-table-wrapper">
+      <table class="pump-comparison-table">
+        <thead>
+          <tr>
+            <th>i</th>
+            <th>Pumped string</th>
+            <th>#a</th>
+            <th>#b</th>
+            <th>#c</th>
+            <th>Membership</th>
+          </tr>
+        </thead>
+        <tbody id="summaryComparison">
+          <tr>
+            <td colspan="6">Waiting for input.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Final interpretation</h3>
+    <div id="summaryConclusion" class="pump-summary-message">
+      Change the input and click Check &amp; animate.
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <b>Important:</b> Testing i = 0, 1 and 2 illustrates the operation;
+    it does not prove that a condition holds for every i ≥ 0.
+    The CFL pumping lemma is a necessary property of context-free
+    languages. A failed legal decomposition for a string in the language
+    is not, by itself, a proof that the language is not context-free.
+  </div>
+</section>
+
+
+
+<section id="pda" class="page">
+<div class="eyebrow">Question 2 · Pushdown automaton</div><h1>PDA · Stack simulation</h1><p>Design a PDA for <b>L = {0ⁿ1³ⁿ | n ≥ 1}</b>. The default input is your assigned string, <b>00111111</b>. Press Step to watch each input symbol change the state and stack.</p>
+<div class="sim-layout">
+<div class="card controls"><h2>Input console</h2><label for="pdaInput">Binary input (0s followed by 1s)</label><input id="pdaInput" value="00111111" maxlength="30" autocomplete="off" spellcheck="false" placeholder="e.g. 00111111"><p class="small">Try: <b>0111</b> accepted · <b>001111</b> rejected · <b>001111111</b> rejected.</p><div class="actions"><button class="btn" id="pdaRun">▶ Play all</button><button class="btn secondary" id="pdaStep">Step →</button><button class="btn ghost" id="pdaReset">Reset</button></div><div id="pdaMessage" class="warning">Ready to run. One 0 creates three stack markers; one 1 removes one marker.</div><div class="progress"><div id="pdaProgress"></div></div><div id="pdaLog" class="log">Machine is waiting for input.</div></div>
+<div class="scene"><div class="scene-top"><h3>Live machine view</h3><span id="pdaStatus" class="status">Ready</span></div><div class="scene-label">1 · Input tape — yellow means “read this next”</div><div id="pdaTape" class="string"></div><div class="tape-help" id="pdaTapeHelp">The pointer moves one symbol to the right after every step.</div><div class="scene-label">2 · State diagram — where the machine is now</div><div class="state-row"><div id="q0" class="state current">q₀</div><div class="arrow">→</div><div id="q1" class="state">q₁</div><div class="arrow">→</div><div id="q2" class="state">q₂</div></div><div id="transitionText" class="transition"><span>δ(q₀, 0, Z₀)</span><b>→ push 3X</b></div><div class="pda-visual-grid"><div class="stack-board"><div class="stack-board-head"><b>3 · Vertical stack</b><span class="status" id="stackCount">0 X markers</span></div><p class="small">New markers appear at the <b>top</b>. Every 0 adds <b>three X blocks</b>; every 1 removes <b>one X block</b>.</p><div class="stack-jar" id="pdaStack"><div class="stack-token bottom">Z₀ · bottom marker</div></div><div class="legend"><span><i class="dot" style="background:#e9e4ff"></i>X = one remaining 1 to match</span><span><i class="dot" style="background:#e8edf6"></i>Z₀ = stack floor</span></div></div><div class="stack-board"><b>4 · What just happened?</b><div id="pdaStepExplain" class="step-explain"><div class="big-step">Ready for Step 1</div>Read the first input symbol. The stack currently has only its bottom marker.</div><div class="scene-label">Step-by-step history</div><div id="pdaLedger" class="pda-ledger"><div class="small">Press Step to build the history here.</div></div></div></div></div>
+</div>
+<div class="footer-note"><b>How the states work:</b> q₀ reads zeros and pushes three X markers per zero. On the first 1, the machine enters q₁ and pops one X per 1. When the input is finished and only Z₀ remains, it moves to accepting state q₂. Any wrong order, too many/few 1s, or empty input is rejected.</div>
+</section>
+</main>
+<script>
+const pages=[...document.querySelectorAll('.page')];
+function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+function makeSym(ch,hot=false){let s=document.createElement('span');s.className='sym '+(ch==='b'?'b':ch==='c'?'c':'')+(hot?' hot':'');s.textContent=ch;return s}
+function renderString(el,str,hotStart=-1,hotEnd=-1){el.innerHTML='';[...str].forEach((ch,i)=>el.appendChild(makeSym(ch,i>=hotStart&&i<hotEnd)))}
+
+const pumpString = document.getElementById('pumpString');
+const pumpLength = document.getElementById('pumpLength');
+const partU = document.getElementById('partU');
+const partV = document.getElementById('partV');
+const partW = document.getElementById('partW');
+const partX = document.getElementById('partX');
+const partY = document.getElementById('partY');
+const pumpI = document.getElementById('pumpI');
+
+const pumpOriginal = document.getElementById('pumpOriginal');
+const pumpParts = document.getElementById('pumpParts');
+const pumpResult = document.getElementById('pumpResult');
+const pumpStatus = document.getElementById('pumpStatus');
+const pumpProgress = document.getElementById('pumpProgress');
+const pumpExplain = document.getElementById('pumpExplain');
+
+function renderPumpString(el, str) {
+  el.replaceChildren();
+
+  if (!str.length) {
+    const empty = document.createElement('span');
+    empty.className = 'small';
+    empty.textContent = 'ε (empty string)';
+    el.appendChild(empty);
+    return;
+  }
+
+  for (const ch of str) {
+    const tile = document.createElement('span');
+    tile.className = 'sym ' + (ch === 'b' ? 'b' : ch === 'c' ? 'c' : '');
+    tile.textContent = ch;
+    el.appendChild(tile);
+  }
+}
+
+function drawPumpParts(parts) {
+  pumpParts.replaceChildren();
+
+  const classes = ['part-u', 'part-v', 'part-w', 'part-x', 'part-y'];
+
+  parts.forEach((value, index) => {
+    const chip = document.createElement('span');
+    chip.className = 'part-chip ' + classes[index];
+
+    const content = document.createElement('span');
+    content.textContent = value || 'ε';
+
+    const label = document.createElement('small');
+    label.textContent = ['u', 'v', 'w', 'x', 'y'][index];
+
+    chip.append(content, label);
+    pumpParts.appendChild(chip);
+  });
+}
+
+function isInTargetLanguage(str) {
+  return /^a*b*c*$/.test(str) &&
+    (str.match(/a/g) || []).length ===
+    (str.match(/b/g) || []).length &&
+    (str.match(/b/g) || []).length ===
+    (str.match(/c/g) || []).length;
+}
+function updatePumpAnalysis() {
+  const s = pumpString.value;
+  const p = Number(pumpLength.value);
+  const i = Number(pumpI.value);
+
+  const u = partU.value;
+  const v = partV.value;
+  const w = partW.value;
+  const x = partX.value;
+  const y = partY.value;
+  const parts = [u, v, w, x, y];
+
+  const alphabetOK =
+    /^[abc]*$/.test(s) && parts.every(part => /^[abc]*$/.test(part));
+
+  const decompositionOK = parts.join('') === s;
+  const validP = Number.isInteger(p) && p >= 1 && p <= 100;
+  const windowLength = (v + w + x).length;
+  const vxLength = (v + x).length;
+  const windowOK = windowLength <= p;
+  const vxOK = vxLength > 0;
+  const stringInL = isInTargetLanguage(s);
+  const lengthOK = validP && s.length >= p;
+
+  const pumped = u + v.repeat(i) + w + x.repeat(i) + y;
+  const pumpedInL = isInTargetLanguage(pumped);
+
+  const status = document.getElementById('analysisStatus');
+  status.className = 'analysis-badge';
+
+  const conditions = [
+    [alphabetOK, 'Alphabet', 'Only a, b and c are allowed.'],
+    [validP, 'Pumping length', `p = ${p}; it must be an integer from 1 to 100.`],
+    [stringInL, 'Original string belongs to L', `s = ${s || 'ε'}; counts of a, b and c must be equal and in block order.`],
+    [lengthOK, 'String length', `|s| = ${s.length}; the lemma requires |s| ≥ p.`],
+    [decompositionOK, 'Decomposition', `u + v + w + x + y = ${parts.join('') || 'ε'}; it must equal s.`],
+    [windowOK, 'Window condition', `|vwx| = ${windowLength}; it must be ≤ p (${p}).`],
+    [vxOK, 'Non-empty pumped parts', `|vx| = ${vxLength}; it must be > 0.`]
+  ];
+
+  const allValid = conditions.every(condition => condition[0]);
+
+  status.textContent = allValid ? 'Conditions satisfied' : 'Check conditions';
+  status.classList.add(allValid ? 'valid' : 'invalid');
+
+  document.getElementById('summaryOriginal').textContent = s || 'ε';
+  document.getElementById('summaryPumped').textContent = pumped || 'ε';
+  document.getElementById('summaryI').textContent = `i = ${i}`;
+
+  document.getElementById('summaryDecomposition').textContent =
+    `s = (${u || 'ε'}) (${v || 'ε'}) (${w || 'ε'}) (${x || 'ε'}) (${y || 'ε'}). ` +
+    `Reconstructed string: ${parts.join('') || 'ε'}. ` +
+    (decompositionOK ? 'The parts reconstruct s correctly.' : 'The parts do not reconstruct s.');
+
+  const conditionBox = document.getElementById('summaryConditions');
+  conditionBox.replaceChildren();
+
+  conditions.forEach(([passed, title, detail]) => {
+    const item = document.createElement('div');
+    item.className = `pump-condition ${passed ? 'pass' : 'fail'}`;
+
+    const heading = document.createElement('strong');
+    heading.textContent = `${passed ? '✓' : '✗'} ${title}`;
+
+    const explanation = document.createElement('div');
+    explanation.textContent = detail;
+
+    item.append(heading, explanation);
+    conditionBox.appendChild(item);
+  });
+
+  document.getElementById('summaryMembership').textContent =
+    `For i = ${i}, the pumped string is "${pumped || 'ε'}". ` +
+    `Counts: a = ${(pumped.match(/a/g) || []).length}, ` +
+    `b = ${(pumped.match(/b/g) || []).length}, ` +
+    `c = ${(pumped.match(/c/g) || []).length}. ` +
+    (pumpedInL ? 'It belongs to L.' : 'It does not belong to L.');
+
+  const comparison = document.getElementById('summaryComparison');
+  comparison.replaceChildren();
+
+  [0, 1, 2].forEach(pumpValue => {
+    const result = u + v.repeat(pumpValue) + w +
+      x.repeat(pumpValue) + y;
+
+    const counts = ['a', 'b', 'c'].map(ch =>
+      (result.match(new RegExp(ch, 'g')) || []).length
+    );
+
+    const row = document.createElement('tr');
+    [
+      `i = ${pumpValue}`,
+      result || 'ε',
+      ...counts,
+      isInTargetLanguage(result) ? 'Yes' : 'No'
+    ].forEach(value => {
+      const cell = document.createElement('td');
+      cell.textContent = String(value);
+      row.appendChild(cell);
+    });
+
+    comparison.appendChild(row);
+  });
+
+  const conclusion = document.getElementById('summaryConclusion');
+
+  if (!alphabetOK || !validP || !decompositionOK ||
+      !windowOK || !vxOK || !stringInL || !lengthOK) {
+    conclusion.textContent =
+      'The current input or decomposition does not satisfy all the required conditions. ' +
+      'Fix the failed checks before interpreting this as a legal pumping-lemma decomposition.';
+  } else if (!pumpedInL) {
+    conclusion.textContent =
+      `For this legal decomposition, pumping with i = ${i} produces "${pumped || 'ε'}", ` +
+      'which is outside L. This illustrates a failed pump for this decomposition; ' +
+      'one decomposition alone does not prove that L is not context-free.';
+  } else {
+    conclusion.textContent =
+      `For this legal decomposition, pumping with i = ${i} produces "${pumped || 'ε'}", ` +
+      'which belongs to L. Check other pumping values too; testing i = 0, 1 and 2 ' +
+      'does not establish the condition for every i ≥ 0.';
+  }
+}
+
+function pumpDraw(animate = false) {
+  const s = pumpString.value;
+  const p = Number(pumpLength.value);
+  const i = Number(pumpI.value);
+
+  const u = partU.value;
+  const v = partV.value;
+  const w = partW.value;
+  const x = partX.value;
+  const y = partY.value;
+
+  const parts = [u, v, w, x, y];
+  const decomposition = parts.join('');
+  const validAlphabet = /^[abc]*$/.test(s) &&
+    parts.every(part => /^[abc]*$/.test(part));
+
+  const decompositionOK = s === decomposition;
+  const windowLength = (v + w + x).length;
+  const pumpedPartsLength = (v + x).length;
+  const windowOK = windowLength <= p;
+  const pumpedPartsOK = pumpedPartsLength > 0;
+  const validP = Number.isInteger(p) && p >= 1 && p <= 100;
+  const validInput = validAlphabet && validP;
+
+  renderPumpString(pumpOriginal, s);
+  drawPumpParts(parts);
+
+  document.getElementById('pumpEquation').textContent =
+    `s = (${u || 'ε'}) (${v || 'ε'}) (${w || 'ε'}) (${x || 'ε'}) (${y || 'ε'})`;
+
+  pumpProgress.style.width = '0%';
+  pumpStatus.textContent = 'Checking';
+
+  const checks = document.getElementById('pumpChecks');
+  const countA = document.getElementById('countA');
+  const countB = document.getElementById('countB');
+  const countC = document.getElementById('countC');
+  const log = document.getElementById('pumpLog');
+  updatePumpAnalysis();
+
+  
+if (!validInput || !decompositionOK || !windowOK || !pumpedPartsOK) {
+  pumpResult.replaceChildren();
+  countA.textContent = '—';
+  countB.textContent = '—';
+  countC.textContent = '—';
+  pumpStatus.textContent = 'Invalid input';
+
+  pumpExplain.textContent = !validAlphabet
+    ? 'Use only the characters a, b and c in the string and its parts.'
+    : !validP
+      ? 'Enter a pumping length p from 1 to 100.'
+      : !decompositionOK
+        ? 'Invalid decomposition: s must equal u + v + w + x + y exactly.'
+        : !windowOK
+          ? 'Invalid decomposition: |vwx| must be at most the pumping length p.'
+          : 'Invalid decomposition: |vx| must be greater than 0.';
+
+  checks.textContent = `Alphabet valid: ${validAlphabet ? 'Yes' : 'No'} · ` +
+    `Decomposition matches: ${decompositionOK ? 'Yes' : 'No'}.`;
+
+  log.textContent = `Entered s: "${s}". Reconstructed string: "${decomposition}".`;
+  return;
+}
+
+
+  const pumped = u + v.repeat(i) + w + x.repeat(i) + y;
+  renderPumpString(pumpResult, animate ? '' : pumped);
+
+  const ca = (pumped.match(/a/g) || []).length;
+  const cb = (pumped.match(/b/g) || []).length;
+  const cc = (pumped.match(/c/g) || []).length;
+  const member = isInTargetLanguage(pumped);
+
+  countA.textContent = ca;
+  countB.textContent = cb;
+  countC.textContent = cc;
+
+  const checksText =
+    `Decomposition s = uvwxy: ✓ (${s.length} symbols)\n` +
+    `|vwx| = ${windowLength} ≤ p (${p}): ${windowOK ? '✓' : '✗'}\n` +
+    `|vx| = ${pumpedPartsLength} > 0: ${pumpedPartsOK ? '✓' : '✗'}\n` +
+    `Pumped string length: ${pumped.length}\n` +
+    `Pumped string ∈ L: ${member ? 'Yes ✓' : 'No ✗'}`;
+
+  checks.textContent = checksText;
+  checks.style.whiteSpace = 'pre-line';
+
+  pumpExplain.textContent =
+    `For i = ${i}, the result is u + v^${i} + w + x^${i} + y. ` +
+    `The resulting string ${member ? 'belongs' : 'does not belong'} to L.`;
+
+  log.textContent =
+    `Original: "${s}". Pumped: "${pumped || 'ε'}". ` +
+    `Counts: a=${ca}, b=${cb}, c=${cc}. ` +
+    `|vwx|=${windowLength}; |vx|=${pumpedPartsLength}. ` +
+    `These are sample checks, not a proof for every i ≥ 0.`;
+
+  pumpStatus.textContent = 'Complete';
+  pumpProgress.style.width = '100%';
+
+  if (animate) {
+    pumpResult.style.opacity = '0.25';
+    setTimeout(() => {
+      renderPumpString(pumpResult, pumped);
+      pumpResult.style.opacity = '1';
+    }, 250);
+  }
+}
+
+document.getElementById('pumpRun').onclick = () => pumpDraw(true);
+
+document.getElementById('pumpReset').onclick = () => {
+  pumpString.value = 'aabbcc';
+  pumpLength.value = '3';
+  partU.value = 'a';
+  partV.value = 'a';
+  partW.value = 'bb';
+partX.value = 'c';
+partY.value = 'c';
+  pumpI.value = '1';
+  pumpDraw(false);
+};
+
+[pumpString, pumpLength, partU, partV, partW, partX, partY, pumpI]
+  .forEach(el => el.addEventListener('input', () => pumpDraw(false)));
+
+pumpDraw(false);
+
+
+let machine=null;
+function setupPDA(){let raw=document.getElementById('pdaInput').value.trim();machine={raw,idx:0,stack:[],state:'q0',log:[],history:[],done:false,accepted:false,error:'',lastAction:'Reset: stack starts with only the bottom marker Z₀.'};renderPDA()}
+function stepPDA(){if(!machine||machine.done)return;let m=machine,s=m.raw;
+if(!/^[01]*$/.test(s)){m.error='Only 0 and 1 are allowed.';m.done=true;m.lastAction='Invalid input: this machine accepts only 0s followed by 1s.';renderPDA();return}
+if(!s.length){m.error='Empty input is not in this language because n ≥ 1.';m.done=true;m.lastAction='Rejected: at least one 0 and its three matching 1s are required.';renderPDA();return}
+if(m.idx>=s.length){m.accepted=m.state==='q1'&&m.stack.length===0&&/^0+1+$/.test(s)&&s.length>0;m.done=true;m.state=m.accepted?'q2':m.state;m.error=m.accepted?'All input read and every X was matched.':'Input ended, but some X markers remain or the input pattern is invalid.';m.lastAction=m.accepted?'End check: input is finished and only Z₀ remains. ACCEPT.':'End check: input is finished, but the stack/pattern is not valid. REJECT.';m.history.push({n:m.history.length+1,title:'Final check',detail:m.lastAction,stack:m.stack.length,state:m.state,idx:m.idx});renderPDA();return}
+let ch=s[m.idx],pos=m.idx+1,msg='',before=m.stack.length;
+if(ch==='0'){
+ if(m.state!=='q0'){m.error=`A 0 appeared at position ${pos} after the 1-phase began.`;m.done=true;m.lastAction=`Read 0 at position ${pos}, but the machine already switched to q₁. Zeros must come before all ones.`;m.history.push({n:m.history.length+1,title:`Step ${m.history.length+1}: invalid 0`,detail:m.lastAction,stack:m.stack.length,state:m.state,idx:m.idx});renderPDA();return}
+ m.stack.push('X','X','X');msg=`Step ${m.history.length+1}: read 0 at position ${pos}. Add 3 X blocks to the top (${before} → ${m.stack.length}).`;m.log.push(msg);m.idx++;m.lastAction=`Read 0: push X, X, X. One zero needs three 1s later, so we store three markers.`;
+}else{
+ if(m.state==='q0')m.state='q1';
+ if(m.stack.length===0){m.error=`Read 1 at position ${pos}, but there is no X left to pop.`;m.done=true;m.lastAction=`Read 1 at position ${pos}, but the stack has no X marker left. There are too many 1s.`;m.history.push({n:m.history.length+1,title:`Step ${m.history.length+1}: extra 1`,detail:m.lastAction,stack:m.stack.length,state:m.state,idx:m.idx});renderPDA();return}
+ m.stack.pop();msg=`Step ${m.history.length+1}: read 1 at position ${pos}. Remove 1 X block (${before} → ${m.stack.length}).`;m.log.push(msg);m.idx++;m.lastAction=`Read 1: pop one X from the top. This 1 has matched one of the 1s promised by an earlier zero.`;
+}
+m.history.push({n:m.history.length+1,title:`Step ${m.history.length+1}: read “${ch}”`,detail:m.lastAction,stack:m.stack.length,state:m.state,idx:m.idx});renderPDA()
+}
+function renderPDA(){if(!machine)return;let m=machine,tape=document.getElementById('pdaTape');tape.innerHTML='';[...m.raw].forEach((ch,i)=>{let el=makeSym(ch,i===m.idx&&!m.done);if(i<m.idx)el.style.opacity='.48';tape.appendChild(el)});if(!m.raw)tape.innerHTML='<span class="small">No input yet</span>';
+document.getElementById('pdaTapeHelp').textContent=m.done?`Input pointer stopped at ${m.idx}/${m.raw.length} symbols.`:`Next symbol: ${m.raw[m.idx]||'end of input'} · consumed ${m.idx}/${m.raw.length}.`;
+['q0','q1','q2'].forEach(id=>document.getElementById(id).className='state'+(m.state===id?' current':'')+(id==='q2'&&m.accepted?' accept':''));
+let stack=document.getElementById('pdaStack');stack.innerHTML='';
+// Render actual stack vertically: bottom marker first, then each X above it; newest/top marker is last visually.
+let bottom=document.createElement('div');bottom.className='stack-token bottom';bottom.textContent='Z₀ · bottom marker';stack.appendChild(bottom);
+m.stack.forEach((v,i)=>{let d=document.createElement('div');d.className='stack-token';d.innerHTML=`<span>${v}</span><span class="token-count">marker ${i+1}</span>`;stack.appendChild(d)});
+document.getElementById('stackCount').textContent=`${m.stack.length} X marker${m.stack.length===1?'':'s'}`;
+let tr=m.done&&m.accepted?'δ(q₁, ε, Z₀) → q₂ · ACCEPT':m.state==='q0'?'δ(q₀, 0, top) → push 3X':m.state==='q1'?'δ(q₁, 1, X) → pop 1X':'δ(q₁, ε, Z₀) → q₂ (accept)';document.getElementById('transitionText').innerHTML='<span>'+tr.split(' → ')[0]+'</span><b>→ '+tr.split(' → ')[1]+'</b>';
+document.getElementById('pdaProgress').style.width=(m.raw.length?100*m.idx/m.raw.length:0)+'%';let status=m.done?(m.accepted?'Accepted ✓':'Rejected ✕'):m.idx===0?'Ready':'Running';document.getElementById('pdaStatus').textContent=status;
+let message=document.getElementById('pdaMessage');message.className=m.done?(m.accepted?'success':'warning'):'warning';message.textContent=m.done?(m.accepted?'Accepted! Every 0 created 3 X markers, and every 1 removed one. The input ended with only Z₀ left.':'Rejected: '+(m.error||'The input does not match the required pattern.')):`State ${m.state==='q0'?'q₀ · reading zeros':m.state==='q1'?'q₁ · matching ones':'q₂ · accepting'} — consumed ${m.idx}/${m.raw.length} symbols; ${m.stack.length} X markers remain.`;
+if(m.idx===m.raw.length&&!m.done)message.textContent='All input symbols have been read. Press Step once more for the final stack check.';
+document.getElementById('pdaLog').textContent=m.log.length?m.log.join(' '):'Machine is waiting for input.';
+let explain=document.getElementById('pdaStepExplain');explain.innerHTML=`<div class="big-step">${m.history.length?m.history[m.history.length-1].title:'Ready for Step 1'}</div>${m.lastAction}`;
+let ledger=document.getElementById('pdaLedger');ledger.innerHTML='';if(!m.history.length){ledger.innerHTML='<div class="small">Press Step to build the history here.</div>'}else{m.history.slice().reverse().forEach((h,i)=>{let row=document.createElement('div');row.className='ledger-row'+(i===0?' active':'');row.innerHTML=`<div class="ledger-n">${h.n}</div><div><b>${h.title}</b><br>${h.detail}<br><span style="color:#7a8496">State: ${h.state} · X markers remaining: ${h.stack}</span></div>`;ledger.appendChild(row)})}
+}
+document.getElementById('pdaStep').onclick=()=>stepPDA();document.getElementById('pdaReset').onclick=()=>setupPDA();document.getElementById('pdaRun').onclick=()=>{if(!machine||machine.done)setupPDA();let guard=0;while(!machine.done&&guard++<100)stepPDA()};document.getElementById('pdaInput').addEventListener('input',()=>{if(machine)setupPDA()});setupPDA();
+</script>
+</body>
+</html>
