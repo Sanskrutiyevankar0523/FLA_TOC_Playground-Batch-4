@@ -113,3 +113,10 @@ To transform selected Theory of Computation concepts into interactive learning e
 
 An educational prototype focused on the Pumping Lemma and Pushdown Automata, with scope for additional TOC concepts and learning activities.
 
+##Project Glimpses
+<img width="1897" height="967" alt="image" src="https://github.com/user-attachments/assets/49a8cc7f-19c2-4f34-ad86-2d52683d8c96" />
+<img width="1900" height="905" alt="image" src="https://github.com/user-attachments/assets/27afa012-4056-4f62-8eb1-b20991910262" />
+<img width="1897" height="911" alt="image" src="https://github.com/user-attachments/assets/e33bc5e7-8656-4627-b49e-0ac146eebf91" />
+<img width="1901" height="911" alt="image" src="https://github.com/user-attachments/assets/efb59303-85dd-413c-bb3d-3f76df500f8f" />
+
+
